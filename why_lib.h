@@ -7,12 +7,24 @@
 #include <iostream>
 #include <fstream>
 
-#define EPSILON 1e-5
+#define EPSILON 1e-15
+#define DELTA 1e-10
 #define MAX_PRECISION 8
 #define not_in_set (double)INT32_MAX + 1 //get a better name for this maybe? 
 
 namespace why
 {
+    const double negative_infinty = (double)INT32_MIN - 1;
+    const double infinity = (double)INT32_MAX + 1;
+
+    template <typename Type>
+    void swap(Type& x, Type& y)
+    {
+        Type store = x;
+        x = y;
+        y = store;
+    }
+
     template <typename Type>
     void display_vector(const std::vector<Type>& vector)
     {

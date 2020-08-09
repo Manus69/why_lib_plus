@@ -41,16 +41,16 @@ namespace why
         double current_term = 0;
         double value = 0;
 
-        if (x < 0 && get_absolute_value(x) > default_domain_bound)
-            return not_in_set;
-        if (x > default_domain_bound)
+        if (get_absolute_value(x) > this->domain)
             return not_in_set;
         while (n >= 0)
         {
             current_term = this->coefficients[n] * raise_to_power(x, n);
             value += current_term;
-            if (get_absolute_value(value) > INT32_MAX)
-                return not_in_set;
+            if (value <= why::negative_infinty)
+                return why::negative_infinty;
+            else if (value >= why::infinity)
+                return why::infinity;
             n --;            
         }
         return value;
@@ -75,16 +75,19 @@ namespace why
 
     double find_root_in_the_interval(const polynomial& polynomial, double a, double b)
     {
-        double midpoint = 0;
+        if (a > b)
+            swap(a, b);
+        
+        double midpoint = not_in_set;
         double left_value = polynomial.evaluate(a);
         double right_value = polynomial.evaluate(b);
-        double mid_value = 0;
+        double mid_value = not_in_set;
 
         if (get_absolute_value(left_value) < EPSILON)
             return left_value;
         if (get_absolute_value(right_value) < EPSILON)
             return right_value;
-        while (b - a > EPSILON)
+        while (b - a > DELTA)
         {
             midpoint = a + get_absolute_value((b - a) / 2);
             mid_value = polynomial.evaluate(midpoint);
@@ -118,6 +121,18 @@ namespace why
         return midpoint;
     }
 
+    static void check_and_push(std::vector<double>& roots, double root)
+    {
+        if (root == not_in_set)
+            return ;
+        if (roots.size())
+        {
+            if (get_absolute_value(root - roots[roots.size() - 1]) < DELTA)
+                return ;
+        }
+        roots.push_back(root);
+    }
+
     std::vector<double> find_roots(const polynomial& polynomial)
     {
         double root = not_in_set;
@@ -147,9 +162,8 @@ namespace why
             else
                 b = critical_points[n];
             root = find_root_in_the_interval(polynomial, a, b);
-            if (root != not_in_set)
-                roots.push_back(root);
-            a = b;
+            check_and_push(roots, root);
+            a = b + DELTA;
             n ++;
         }
         return roots;
@@ -158,12 +172,14 @@ namespace why
     void print_roots(std::vector<double> roots, int precision)
     {
         unsigned int n = 0;
+        std::string string;
 
         if (!roots.size())
             std::printf("no real roots;");
         while (n < roots.size())
         {
-            std::printf("%s; ", get_formatted_number_string(roots[n], precision).c_str());
+            string = get_formatted_number_string(roots[n], precision);
+            std::printf("%s; ", string.c_str());
             n ++;
         }
         std::printf("\n");

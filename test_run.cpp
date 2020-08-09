@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     // std::printf("%s\n", string.c_str());
 
     // why::polynomial polynomial = why::polynomial({-1, -1, 1});
-    why::polynomial polynomial = why::polynomial({-1, 1, -1, 1, -1, 1, -1, 1, -1, 1});
+    why::polynomial polynomial = why::polynomial({-1, 1, -1, 1, 1});
     polynomial.display();
     // double r1 = why::find_root_in_the_interval(polynomial, -1, 0);
     // std::printf("%f\n", r1);

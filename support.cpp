@@ -164,8 +164,10 @@ namespace why
         while (n > 1)
         {
             result = result * x;
-            if (get_absolute_value(result) > INT32_MAX)
-                return not_in_set;
+            if (result >= why::infinity)
+                return why::infinity;
+            else if (result <= why::negative_infinty)
+                return why::negative_infinty;
             n --;
         }
         return result;
