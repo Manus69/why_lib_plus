@@ -8,6 +8,7 @@ namespace why
         this->coefficients = coefficients;
         this->degree = coefficients.size() - 1;
         this->domain = default_domain_bound;
+        this->roots_computed = false;
     }
 
     polynomial::~polynomial(void)
@@ -33,6 +34,15 @@ namespace why
             n --;
         }
         std::printf("%s\n", string.c_str());
+        if (this->roots_computed)
+        {
+            string.clear();
+            string = "roots in the interval [-" + \
+            why::get_formatted_number_string(this->domain, precision) + ", " + \
+            why::get_formatted_number_string(this->domain, precision) + "]: ";
+            std::printf("%s", string.c_str());
+            why::print_roots(this->roots, precision);
+        }
     }
 
     double polynomial::evaluate(double x) const
@@ -54,6 +64,14 @@ namespace why
             n --;            
         }
         return value;
+    }
+
+    void polynomial::find_roots(void)
+    {
+        if (this->roots_computed)
+            return ;
+        this->roots = why::find_roots(*this);
+        this->roots_computed = true;
     }
 
     polynomial get_derivative(const polynomial& polynomial)
@@ -175,7 +193,7 @@ namespace why
         std::string string;
 
         if (!roots.size())
-            std::printf("no real roots;");
+            std::printf("no real roots in the interval;");
         while (n < roots.size())
         {
             string = get_formatted_number_string(roots[n], precision);

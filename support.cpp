@@ -77,18 +77,22 @@ namespace why
             if (right_index == -1)
             {
                 substring = string.substr(left_index, length - 1);
-                vector.push_back(substring);
+                if (substring.size())
+                    vector.push_back(substring);
                 return vector;
             }
             else
             {
                 substring = string.substr(left_index, right_index - left_index);
-                vector.push_back(substring);
+                if (substring.size())
+                    vector.push_back(substring);
                 left_index = right_index + 1;
             }
         }
         return vector;
     }
+
+
 
     static std::string get_fractional_part(double fractional_part, int precision)
     {

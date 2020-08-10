@@ -36,21 +36,10 @@ int main(int argc, char **argv)
     //     data_vector.clear();
     // }
 
-    // double x = INT32_MAX + 1;
-    // std::string string = why::double_to_string(x, 3);
-    // std::printf("%s\n", string.c_str());
 
-    // why::polynomial polynomial = why::polynomial({-1, -1, 1});
-    why::polynomial polynomial = why::polynomial({-1, 1, -1, 1, 1});
-    polynomial.display();
-    // double r1 = why::find_root_in_the_interval(polynomial, -1, 0);
-    // std::printf("%f\n", r1);
-
-    std::vector<double> roots = why::find_roots(polynomial);
-    why::print_roots(roots, 3);
-
-    // double x = why::raise_to_power(3.141592, 2);
-    // std::printf("%s\n", why::get_formatted_number_string(x, 6).c_str());
-
+    why::matrix matrix = why::matrix("1 1 ; 0 1");
+    matrix.display();
+    why::matrix transpose = why::transpose(matrix);
+    transpose.display();
     return 0;
 }

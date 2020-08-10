@@ -1,7 +1,7 @@
 compiler = g++
 flags = -g -Wall -Wextra
 headers = $(wildcard *.h)
-source_files = data_item.cpp polynomial.cpp support.cpp
+source_files = data_item.cpp polynomial.cpp matrix.cpp support.cpp
 run_file = test_run.cpp
 polynomial_main = polynomial_main.cpp
 object_dir = object_files/
@@ -10,7 +10,7 @@ polynomial_main_object = $(subst .cpp,.o,$(addprefix $(object_dir), $(polynomial
 object_files = $(subst .cpp,.o,$(addprefix $(object_dir),$(source_files)))
 binary_name = test_run
 
-all: create polynomial
+all: create test_run
 
 $(object_dir)%.o : %.cpp $(headers)
 	$(compiler) $(flags) -I. -c -o $@ $<

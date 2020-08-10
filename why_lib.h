@@ -25,6 +25,27 @@ namespace why
         y = store;
     }
 
+    template <typename type>
+    std::vector<type> concatenate_vectors(const std::vector<type>& lhs, const std::vector<type>& rhs)
+    {
+        unsigned int n = 0;
+        std::vector<type> result;
+
+        result.reserve(lhs.size() + rhs.size());
+        while (n < lhs.size())
+        {
+            result.push_back(lhs[n]);
+            n ++;
+        }
+        n = 0;
+        while (n < rhs.size())
+        {
+            result.push_back(rhs[n]);
+            n ++;
+        }
+        return result;
+    }
+
     template <typename Type>
     void display_vector(const std::vector<Type>& vector)
     {
@@ -84,12 +105,33 @@ namespace why
 
             void display(int precision = default_precision) const ;
             double evaluate(double x) const ;
+            void find_roots(void);
             friend polynomial get_derivative(const polynomial& polynomial);
             friend std::vector<double> find_roots(const polynomial& polynomial);
         private:
             int degree;
+            bool roots_computed;
             double domain;
             std::vector<double> coefficients;
+            std::vector<double> roots;
+    };
+
+    class matrix
+    {
+        private:
+            std::vector<double> *entries;
+            int number_of_rows;
+            int number_of_columns;
+        public:
+            matrix(std::string input);
+            matrix(const std::vector<double>& entries, int n_rows);
+            ~matrix(void);
+            std::vector<double> get_row(int n) const;
+            std::vector<double> get_column(int m) const;
+            void display(int precision = 3) const;
+            double operator() (int n, int m) const;
+            friend double dot(const matrix& v, const matrix& w);
+            friend matrix transpose(const matrix& A);
     };
 
     int round(double x);
@@ -110,6 +152,8 @@ namespace why
     double find_root_in_the_interval(const polynomial& polynomial, double a, double b);
     std::vector<double> find_roots(const polynomial& polynomial);
     void print_roots(std::vector<double> roots, int precision);
+
+    matrix transpose(const matrix& A);
 }
 
 

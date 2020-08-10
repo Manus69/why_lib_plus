@@ -22,11 +22,13 @@ int main(int argc, char **argv)
         n --;
     }
     why::polynomial polynomial = why::polynomial(coefficients);
-    polynomial.display();
+    // polynomial.display();
     // double x = why::find_root_in_the_interval(polynomial, -100, 0);
     // std::printf("%f\n", x);
-    roots = why::find_roots(polynomial);
-    why::print_roots(roots, 5);
+    // roots = why::find_roots(polynomial);
+    // why::print_roots(roots, 5);
+    polynomial.find_roots();
+    polynomial.display();
 
     return 0;
 }
