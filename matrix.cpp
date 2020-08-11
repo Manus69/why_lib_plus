@@ -33,6 +33,7 @@ namespace why
         double current_entry = not_in_set;
 
         this->entries = new std::vector<double> ();
+        this->largest_entry = 0;
         rows = why::split_string(input, ";");
         while (j < rows.size())
         {
@@ -42,6 +43,8 @@ namespace why
             while (k < row_entries.size())
             {
                 current_entry = std::atof(row_entries[k].c_str());
+                if (get_absolute_value(current_entry) > this->largest_entry)
+                    this->largest_entry = current_entry;
                 (this->entries)->push_back(current_entry);
                 items_in_row[j] ++;
                 k ++;
@@ -51,7 +54,7 @@ namespace why
         }
         this->number_of_rows = j;
         if (check_vector_uniformity(items_in_row))
-            this->number_of_columns = items_in_row.size();
+            this->number_of_columns = items_in_row[0];
         else
             exit(1); //error handling goes here
     }
@@ -63,6 +66,7 @@ namespace why
         this->entries = new std::vector<double> (entries);
         this->number_of_rows = n_rows;
         this->number_of_columns = entries.size() / n_rows;
+        this->largest_entry = get_max_value(entries);
     }
 
     matrix::~matrix(void)
@@ -70,22 +74,37 @@ namespace why
         delete this->entries;
     }
 
+    static std::string get_format_string(double largest_value, int precision)
+    {
+        int width = 0;
+        std::string format;
+        std::string entry = get_formatted_number_string(largest_value, precision);
+
+        width = entry.size() + 1;
+        format = "%-" + std::to_string(width) + "s";
+        return format;
+    }
+
     void matrix::display(int precision) const
     {
         int j = 0;
         int k = 0;
         std::string entry;
+        std::string format;
 
+        format = get_format_string(this->largest_entry, precision);
         while (j < this->number_of_rows)
         {
             k = 0;
+            std::printf("|");
             while (k < this->number_of_columns)
             {
                 entry = get_formatted_number_string((*this)(j, k), precision);
-                std::printf("%s ", entry.c_str());
+                // std::printf("%-5s ", entry.c_str());
+                std::printf(format.c_str(), entry.c_str());
                 k ++;
             }
-            std::printf("\n");
+            std::printf("|\n");
             j ++;
         }
     }

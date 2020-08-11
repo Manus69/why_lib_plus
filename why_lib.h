@@ -65,6 +65,26 @@ namespace why
         return (a < 0) ? -a : a;
     }
 
+    template <typename type>
+    type get_max_value(const std::vector<type>& vector)
+    {
+        unsigned int n = 0;
+        type current_max;
+        type current_value;
+
+        if (!vector.size())
+            throw -1; //this is terrible;
+        current_max = get_absolute_value(vector[0]);
+        while (n < vector.size())
+        {
+            current_value = get_absolute_value(vector[n]);
+            if (vector[n] > current_max)
+                current_max = current_value;
+            n ++;
+        }
+        return current_max;
+    }
+
     union data
     {
         int n;
@@ -122,6 +142,7 @@ namespace why
             std::vector<double> *entries;
             int number_of_rows;
             int number_of_columns;
+            double largest_entry;
         public:
             matrix(std::string input);
             matrix(const std::vector<double>& entries, int n_rows);

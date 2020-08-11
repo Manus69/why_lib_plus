@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     // }
 
 
-    why::matrix matrix = why::matrix("1 1 ; 0 1");
+    why::matrix matrix = why::matrix("1 3.14159 ; 0 1; -1 -2.718");
     matrix.display();
     why::matrix transpose = why::transpose(matrix);
     transpose.display();
